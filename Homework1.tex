@@ -1,0 +1,148 @@
+\documentclass[10pt]{amsart}
+\usepackage[letterpaper, portrait, margin=0.5in]{geometry}                % See geometry.pdf to learn the layout options. There are lots.               % ... or a4paper or a5paper or ... 
+%\geometry{landscape}                % Activate for for rotated page geometry
+\usepackage[parfill]{parskip}    % Activate to begin paragraphs with an empty line rather than an indent
+\usepackage{graphicx}
+\usepackage{amssymb}
+\usepackage{epstopdf}
+\usepackage[normalem]{ulem}
+\DeclareGraphicsRule{.tif}{png}{.png}{`convert #1 `dirname #1`/`basename #1 .tif`.png}
+
+\title{EECS 837 Homework 1}
+\author{Elise McEllhiney}
+\date{\today}                                           % Activate to display a given date or no date
+
+\begin{document}
+\maketitle
+
+\begin{center}
+\begin{tabular}{ | c | c | c | c | c | c | c | c | c |}
+\hline
+ & \multicolumn{4}{|c|}{Attributes} & Decision & \multicolumn{3}{|c|}{Conceptual Variables} \\
+ \hline
+ & Size & Color & Feel & Temperature & Attitude & $Attitude_{positive}$ & $Attitude_{negative}$ & $Attitude_{so-so}$ \\
+ \hline
+ 1 & big & yellow & soft & low & positive & positive & SPECIAL & SPECIAL \\ 
+ 2 & big & yellow & hard & high & negative & SPECIAL & negative & SPECIAL\\  
+ 3 & medium & yellow & soft & high & positive & positive & SPECIAL & SPECIAL\\  
+ 4 & medium & blue & hard & high & positive & positive & SPECIAL & SPECIAL\\ 
+ 5 & medium & blue & hard & high & positive & positive & SPECIAL & SPECIAL\\ 
+ 6 & medium & blue & soft & low & negative & SPECIAL & negative & SPECIAL \\ 
+ 7 & big & blue & hard & low & so-so & SPECIAL & SPECIAL & so-so \\
+ 8 & big & blue & hard & high & so-so & SPECIAL & SPECIAL & so-so \\
+ \hline 
+\end{tabular}
+
+$\{ d \}^* = \{  \{ 1, 3, 4, 5 \}, \{ 2, 6 \}, \{ 7, 8 \} \}$
+
+\end{center}
+
+\section{For the above decision table, determine a set of rules using conceptual variables and}
+\subsection{a single global covering for each conceptual variable and then linear dropping condition technique (i.e. by the LEM1 algorithm)}
+
+$$Attitude_{positive}$$
+$$\{ Attitude_{positive} \}^* = \{\{1,3,4,5\},\{2,6,7,8\}\}$$
+
+Size?  $\{A - \{Size\}\}^* = \{Color, Feel, Temperature\}^* = \{ \{ 1 \}, \{ 2 \}, \{ 3 \}, \{ 4, 5, 8 \}, \{ 6 \}, \{ 7 \} \} \nleq \{ Attitude_{positive} \}^* $ \\
+Color? $\{A - \{Color\}\}^* = \{Size, Feel, Temperature\}^* = \{ \{ 1 \}, \{ 2, 8 \}, \{ 3 \}, \{ 4, 5 \}, \{ 6 \}, \{ 7 \} \} \leq \{ Attitude_{positive} \}^* $ \\
+Feel? $\{A - \{Color, Feel\}\}^* = \{Size, Temperature\}^* = \{ \{ 1, 7 \}, \{ 2, 8 \}, \{ 3, 4, 5 \}, \{ 6 \} \} \nleq \{ Attitude_{positive} \}^* $ \\
+Temperature? $\{A - \{Color, Temperature\}\}^* = \{Size, Feel\}^* = \{ \{ 1 \}, \{ 2, 7, 8 \}, \{ 3, 6 \}, \{ 4, 5 \} \} \nleq \{ Attitude_{positive} \}^* $
+
+Single Global Covering for $Attitude_{positive}$ = \{ Size, Feel, Temperature \}
+
+\begin{center}Creating a rule set for $Attitude_{positive}$\end{center}
+
+(Size, big) \& (Feel, soft) \& \sout{(Temperature, low)} $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 1 \}\\
+\sout{(Size, medium)} \& (Feel, soft) \& (Temperature, high) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 3 \} \\
+(Size, medium) \& \sout{(Feel, hard)} \& (Temperature, high) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 3, 4, 5 \} \\
+
+$$Attitude_{negative}$$
+$$\{ Attitude_{negative} \}^* = \{ \{ 2, 6 \} , \{ 1, 3, 4, 5, 7, 8 \} \}$$
+
+Size?  $\{A - \{Size\}\}^* = \{Color, Feel, Temperature\}^* = \{ \{ 1 \}, \{ 2 \}, \{ 3 \}, \{ 4, 5, 8 \}, \{ 6 \}, \{ 7 \} \} \leq \{ Attitude_{negative} \}^* $ \\
+Color? $\{A - \{Size, Color\}\}^* = \{Feel, Temperature\}^* = \{ \{ 1, 6 \}, \{ 2, 4, 5, 8 \}, \{ 3 \}, \{ 7 \}  \} \nleq \{ Attitude_{negative} \}^* $ \\
+Feel? $\{A - \{ Size, Feel\}\}^* = \{Color, Temperature\}^* = \{ \{ 1 \}, \{ 2, 3 \}, \{ 4, 5, 8 \}, \{ 6, 7 \} \} \nleq \{ Attitude_{negative} \}^* $ \\
+Temperature? $\{A - \{Size, Temperature\}\}^* = \{Color, Feel\}^* = \{ \{ 1, 3 \}, \{ 2 \}, \{ 4, 5, 7, 8 \}, \{ 6 \} \} \leq \{ Attitude_{negative} \}^* $
+
+Single Global Covering for $Attitude_{negative}$ = \{ Color, Feel \}
+
+\begin{center}Creating a rule set for $Attitude_{negative}$\end{center}
+
+(Color, yellow) \& (Feel, hard) $\rightarrow$ (Attitude, negative) \qquad Covers: \{ 2 \}\\
+(Color, blue) \& (Feel, soft) $\rightarrow$ (Attitude, negative) \qquad Covers: \{ 6 \}\\
+
+$$Attitude_{so-so}$$
+$$\{ Attitude_{so-so} \}^* = \{\{1, 2, 3,4, 5, 6 \},\{ 7,8 \}\}$$
+
+Size?  $\{A - \{Size\}\}^* = \{Color, Feel, Temperature\}^* = \{ \{ 1 \}, \{ 2 \}, \{ 3 \}, \{ 4, 5, 8 \}, \{ 6 \}, \{ 7 \} \} \nleq \{ Attitude_{so-so} \}^* $ \\
+Color? $\{A - \{Color\}\}^* = \{Size, Feel, Temperature\}^* = \{ \{ 1 \}, \{ 2, 8 \}, \{ 3 \}, \{ 4, 5 \}, \{ 6 \}, \{ 7 \} \} \nleq \{ Attitude_{so-so} \}^* $ \\
+Feel? $\{A - \{Feel\}\}^* = \{Size, Color, Temperature\}^* = \{ \{ 1 \}, \{ 2 \}, \{ 3 \}, \{ 4, 5 \}, \{ 6 \}, \{ 7 \}, \{ 8 \}  \} \leq \{ Attitude_{so-so} \}^* $ \\
+Temperature? $\{A - \{Feel, Temperature\}\}^* = \{Size, Color\}^* = \{ \{ 1, 2 \}, \{ 3 \}, \{ 4, 5, 6 \}, \{ 7, 8 \} \} \leq \{ Attitude_{so-so} \}^* $ \\
+
+Single Global Covering for $Attitude_{so-so}$ = \{ Size, Color \}
+
+\begin{center}Creating a rule set for $Attitude_{so-so}$\end{center}
+
+(Size, big) \& (Color, blue) $\rightarrow$ (Attitude, so-so) \qquad Covers: \{ 7, 8 \}\\
+
+\begin{center}Complete rule set using LEM1 algorithm\end{center}
+(Size, big) \& (Feel, soft) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 1 \}\\
+(Size, medium) \& (Temperature, high) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 3, 4, 5 \} \\
+(Color, yellow) \& (Feel, hard) $\rightarrow$ (Attitude, negative) \qquad Covers: \{ 2 \}\\
+(Color, blue) \& (Feel, soft) $\rightarrow$ (Attitude, negative) \qquad Covers: \{ 6 \}\\
+(Size, big) \& (Color, blue) $\rightarrow$ (Attitude, so-so) \qquad Covers: \{ 7, 8 \}\\
+
+\subsection{all global coverings for each conceptual variable and then linear dropping condition technique}\hspace*{\fill} \\
+\\
+$\{ Size \}^* = \{ \{ 1, 2, 7, 8 \}, \{ 3, 4, 5, 6 \} \}$\\
+$\{ Color \}^* = \{ \{ 1, 2, 3 \}, \{ 4, 5, 6, 7, 8 \} \}$\\
+$\{ Feel \}^* = \{ \{ 1, 3, 6 \}, \{ 2, 4, 5, 7, 8 \} \}$\\
+$\{ Temperature \}^* = \{ \{ 1, 6, 7 \}, \{ 2, 3, 4, 5, 8 \} \}$\\
+
+$\{ Size, Color \}^* = \{ \{ 1, 2 \}, \{ 3 \}, \{ 4, 5, 6 \}, \{ 7, 8 \} \} \leq \{ Attitude_{so-so} \}^* $\\
+$\{ Size, Feel \}^* = \{ \{ 1 \}, \{ 2, 7, 8 \}, \{ 3, 6 \}, \{ 4, 5 \} \}$\\
+$\{ Size, Temperature \}^* = \{ \{ 1, 7 \}, \{ 2, 8 \} \{ 3, 4, 5 \}, \{ 6 \} \}$\\
+$\{ Color, Feel \}^* = \{ \{ 1, 3 \}, \{ 2 \}, \{ 4, 5, 7, 8 \}, \{ 6 \} \} \leq \{ Attitude_{negative} \}^*$\\
+$\{ Color, Temperature \}^* = \{ \{ 1 \}, \{ 2, 3 \}, \{ 4, 5, 8 \}, \{ 6, 7 \} \}$\\
+$\{ Feel, Temperature \}^* = \{ \{ 1, 6 \}, \{ 2, 4, 5, 8 \}, \{ 3 \}, \{ 7 \} \}$\\
+
+$\{ Size, Color, Feel \}^* = \{ \{ 1 \}, \{ 2 \}, \{ 3 \}, \{ 4, 5 \}, \{ 6 \}, \{ 7, 8 \} \} \leq \{ Attitude_{positive} \}^*$\\
+$\{ Size, Color, Temperature \}^* = \{ \{ 1 \}, \{ 2 \}, \{ 3 \}, \{ 4, 5 \}, \{ 6 \} \{ 7 \}, \{ 8 \} \} \leq \{ Attitude_{positive} \}^*$\\
+$\{ Size, Feel, Temperature \}^* = \{ \{ 1 \}, \{ 2, 8 \}, \{ 3 \}, \{ 4, 5 \}, \{ 6 \}, \{ 7 \} \} \leq \{ Attitude_{positive} \}^*$\\
+$\{ Color, Feel, Temperature \}^* = \{ \{ 1 \}, \{ 2 \}, \{ 3 \} \{ 4, 5, 8 \}, \{ 6 \}, \{ 7 \} \} $\\
+
+$ \{ Size, Color, Feel \} $ rules for $ \{ Attitude_{positive} \} $\\
+\sout{(Size, big)} \& (Color, yellow) \& (Feel, soft) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 1, 3 \} \\
+(Size, medium) \& (Color, blue) \& (Feel, hard) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 4, 5 \} \\
+
+$ \{ Size, Color, Temperature \} $ rules for $ \{ Attitude_{positive} \} $\\
+\sout{(Size, big)} \& (Color, yellow) \& (Temperature, low) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 1 \} \\
+(Size, medium) \& \sout{(Color, blue)} \& (Temperature, high) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 3, 4, 5 \} \\
+
+Rules for $ \{ Attitude_{positive} \} $ are equally complex for global coverings $\{ Size, Color, Temperature\} and \{ Size, Feel, Temperature \}$
+
+\begin{center}Complete rule set using all global coverings and linear dropping technique\end{center}
+
+(Size, big) \& (Feel, soft) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 1 \}\\
+(Size, medium) \& (Temperature, high) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 3, 4, 5 \} \\
+(Color, yellow) \& (Feel, hard) $\rightarrow$ (Attitude, negative) \qquad Covers: \{ 2 \}\\
+(Color, blue) \& (Feel, soft) $\rightarrow$ (Attitude, negative) \qquad Covers: \{ 6 \}\\
+(Size, big) \& (Color, blue) $\rightarrow$ (Attitude, so-so) \qquad Covers: \{ 7, 8 \}\\
+
+\section{For the above decision table give a rule set example that is:}
+\subsection{complete but not consistent}\hspace*{\fill} \\
+\begin{center}Ruleset that is complete but not consistent\end{center}
+(Size, big) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 1, 2, 7, 8 \}\\
+(Size, medium) $\rightarrow$ (Attitude, negative) \qquad Covers: \{ 3, 4, 5, 6 \}\\
+
+\subsection{neither complete nor consistent}\hspace*{\fill} \\
+\begin{center}Ruleset that is neither complete nor consistent\end{center}
+(Size, big) $\rightarrow$ (Attitude, positive) \qquad Covers: \{ 1, 2, 7, 8 \}\\
+
+\subsection*{A rule set R is consistent if and only if every rule from R is consistent with the data set (decision table).  A rule set R is complete if and only if every concept from the data set is completely covered by R.}
+%\section{}
+%\subsection{}
+
+
+
+\end{document}  
