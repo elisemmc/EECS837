@@ -91,7 +91,7 @@ class lem1:
 			if os.path.exists(filename):
 				file_not_found = False
 			else:
-				print 'Error ' + str(filename) + ' not found.'
+				print 'Error ' + os.path.dirname(os.path.abspath(__file__)) + '/' + str(filename) + ' not found.'
 
 		self.filename = filename
 		file = open(filename, 'r')
