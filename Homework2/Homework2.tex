@@ -23,207 +23,24 @@
 \begin{center}
 \begin{tabular}{ | c | c | c | c | c | c | c | c | c |}
 \hline
- & \multicolumn{4}{|c|}{Attributes} & Decision & \multicolumn{3}{|c|}{Conceptual Variables} \\
+ & \multicolumn{3}{|c|}{Attributes} & Decision \\
  \hline
- & Size & Color & Feel & Temperature & Attitude & $Attitude_{positive}$ & $Attitude_{negative}$ & $Attitude_{so-so}$ \\
+ & Wind & Humidity & Temperature & Trip \\
  \hline
- 1 & big & yellow & soft & low & positive & positive & SPECIAL & SPECIAL \\ 
- 2 & big & yellow & hard & high & negative & SPECIAL & negative & SPECIAL\\  
- 3 & medium & yellow & soft & high & positive & positive & SPECIAL & SPECIAL\\  
- 4 & medium & blue & hard & high & so-so & SPECIAL & SPECIAL & so-so\\ 
- 5 & medium & blue & hard & high & negative & SPECIAL & negative & SPECIAL\\ 
- 6 & medium & blue & soft & low & negative & SPECIAL & negative & SPECIAL \\ 
- 7 & big & blue & hard & low & so-so & SPECIAL & SPECIAL & so-so \\
- 8 & big & blue & hard & low & positive & positive & SPECIAL & SPECIAL \\
+ 1 & 5 & 20 & 26 & yes\\ 
+ 2 & 10 & 40 & 20 & yes\\  
+ 3 & 5 & 60 & 20 & yes\\  
+ 4 & 10 & 20 & 16 & no\\ 
+ 5 & 15 & 40 & 20 & no\\ 
+ 6 & 10 & 50 & 26 & no\\ 
  \hline 
 \end{tabular}
 \end{center}
 
-Determine sets of certain and possible rules for all three concepts by the LEM2 algorithm.
-
-$$A^* = \{  \{ 1 \}, \{ 2 \}, \{ 3 \}, \{ 4, 5 \}, \{ 6 \}, \{ 7, 8 \} \}$$
-$$\{ d \}^* = \{  \{ 1, 3, 8 \}, \{ 2, 5, 6 \}, \{ 4, 7 \} \}$$
-$$A^* \nleq \{d\}^*$$
-
-$$Attitude_{positive} = \{1,3,8\} \qquad \underline{Attitude_{positive}} = \{ 1,3 \} \qquad \overline{Attitude_{positive}} = \{ 1,3,7,8 \}$$
-$$Attitude_{negative} = \{2,5,6\} \qquad \underline{Attitude_{negative}} = \{ 2,6 \} \qquad \overline{Attitude_{negative}} = \{ 2,4,5,6 \}$$
-$$Attitude_{so-so} = \{4,7\} \qquad \underline{Attitude_{so-so}} = \{  \} \qquad \overline{Attitude_{so-so}} = \{ 4,5,7,8 \}$$
-
-\begin{center}
-\begin{tabular}{ | c | c | c | c ||| c | c !{\vrule width 1pt } !{\vrule width 1pt}}
-\hline
-(a,v) & [(a,v)] & \{1,3\} & \{1,3\} & \{2,6\}&\{2,6\} \\
-\hline
-(Size, big) & \{1,2,7,8\}&\{1\}&\{1\} &\{2\}&\{2\} \\ 
-(Size, medium) & \{3,4,5,6\}&\{3\}&\{3\} &\{6\}&\{6\}\\  
-(Color, yellow) & \{1,2,3\}&\hl{\{1,3\}}&- &\hl{\{2\}}&- \\  
-(Color, blue) & \{4,5,6,7,8\}&-&- &\{6\}&\{6\}  \\ 
-(Feel, soft) & \{1,3,6\}&\{1,3\}&\hl{\{1,3\}} &\{6\}&\hl{\{6\}} \\ 
-(Feel, hard) & \{2,4,5,7,8\}&-&- &\{2\}&\{2\} \\ 
-(Temperature, low) & \{1,6,7,8\}&\{1\}&\{1\} &\{6\}&\{6\} \\
-(Temperature, high) & \{2,3,4,5\}&\{3\}&\{3\} &\{2\}&\{2\} \\
-\hline 
-&& \{1,2,3\} $\nsubseteq$ \{1,3\} & \{1,2,3\} $\cap$ \{1,3,6\} = \{1,3\} $\subseteq$ \{1,3\} & \{1,2,3\} $\nsubseteq$ \{2,6\} & \{1,2,3\} $\cap$ \{1,3,6\} = \{1\} $\nsubseteq$ \{2,6\} \& \{1\} $\nsupseteq$ \{2,6\}
-\end{tabular}
-
-\{2,6\} can't occur in one rule since all their attributes are contradictory, so we split them apart.
-
-\begin{tabular}{ | c | c !{\vrule width 1pt } !{\vrule width 1pt} c | c | c !{\vrule width 1pt } !{\vrule width 1pt}}
-\hline
-(a,v) & [(a,v)] & \{2\}&\{2\}&\{2\}\\
-\hline
-(Size, big) & \{1,2,7,8\}        & \{2\}      & \hl{\{2\}} & -\\ 
-(Size, medium) & \{3,4,5,6\}     & -          & -          & -\\  
-(Color, yellow) & \{1,2,3\}      & \hl{\{2\}} & -          & -\\  
-(Color, blue) & \{4,5,6,7,8\}    & -          & -          & -\\ 
-(Feel, soft) & \{1,3,6\}         & -          & -          & -\\ 
-(Feel, hard) & \{2,4,5,7,8\}     & \{2\}      & \{2\}      & \{2\}\\ 
-(Temperature, low) &\{1,6,7,8\}  & -          & -          & -\\
-(Temperature, high) & \{2,3,4,5\}& \{2\}      & \{2\}      & \hl{\{2\}}\\
-\hline 
-&& \{1,2,3\} $\nsubseteq$ \{2,6\} & \{1,2,3\} $\cap$ \{1,2,7,8\} = \{1,2\} $\nsubseteq$ \{2,6\} & \{1,2,3\} $\cap$ \{1,2,7,8\} $\cap$ \{2,3,4,5\} = \{2\} $\subseteq$ \{2,6\}
-\end{tabular}
-
-\begin{tabular}{ | c | c !{\vrule width 1pt } !{\vrule width 1pt} c | c | c |||}
-\hline
-(a,v) & [(a,v)] & \{6\}&\{6\}&\{6\}\\
-\hline
-(Size, big) & \{1,2,7,8\}        & -          & -          & -\\ 
-(Size, medium) & \{3,4,5,6\}     & \{6\}      & \hl{\{6\}} & -\\  
-(Color, yellow) & \{1,2,3\}      & -          & -          & -\\  
-(Color, blue) & \{4,5,6,7,8\}    & \{6\}      & \{6\}      & \hl{\{6\}}\\ 
-(Feel, soft) & \{1,3,6\}         & \hl{\{6\}} & -          & -\\ 
-(Feel, hard) & \{2,4,5,7,8\}     & -          & -          & -\\ 
-(Temperature, low) &\{1,6,7,8\}  & \{6\}      & -          & -\\
-(Temperature, high) & \{2,3,4,5\}& -          & -          & -\\
-\hline 
-&& \{1,3,6\} $\nsubseteq$ \{2,6\} & \{1,3,6\} $\cap$ \{3,4,5,6\} = \{3,6\} $\nsubseteq$ \{2,6\} & \{1,3,6\} $\cap$ \{3,4,5,6\} $\cap$ \{4,5,6,7,8\} = \{6\} $\subseteq$ \{2,6\}
-\end{tabular}
-
-Certain Rules:\\
-(Color, yellow) \& (Feel, soft) $\rightarrow$ (Attitude, positive)\\
-\sout{(Color, yellow)} \& (Size, big) \& (Temperature, high) $\rightarrow$ (Attitude, negative)\\
-(Feel, soft) \& \sout{(Size, medium)} \& (Color, blue) $\rightarrow$ (Attitude, negative)\\
-\hfill\\
-\begin{tabular}{ | c | c !{\vrule width 1pt } !{\vrule width 1pt} c | c !{\vrule width 1pt } !{\vrule width 1pt}}
-\hline
-(a,v) & [(a,v)] & \{1,3,7,8\} & \{1,3,7,8\} \\
-\hline
-(Size, big) & \{1,2,7,8\}        & \hl{\{1,7,8\}}& -             \\ 
-(Size, medium) & \{3,4,5,6\}     & \{3\}         & \{3\}         \\  
-(Color, yellow) & \{1,2,3\}      & \{3\}         & \{3\}         \\  
-(Color, blue) & \{4,5,6,7,8\}    & \{7,8\}       & \{7,8\}       \\ 
-(Feel, soft) & \{1,3,6\}         & \{1,3\}       & \{1,3\}       \\ 
-(Feel, hard) & \{2,4,5,7,8\}     & \{7,8\}       & \{7,8\}       \\ 
-(Temperature, low) &\{1,6,7,8\}  & \{1,7,8\}     & \hl{\{1,7,8\}}\\
-(Temperature, high) & \{2,3,4,5\}& \{3\}         & \{3\}         \\
-\hline 
-&& \{1,2,7,8\} $\nsubseteq$ \{1,3,7,8\} & \{1,2,7,8\} $\cap$ \{1,6,7,8\} = \{1,7,8\} $\subseteq$ \{1,3,7,8\}
-\end{tabular}
-
-\begin{tabular}{ | c | c !{\vrule width 1pt } !{\vrule width 1pt} c | c !{\vrule width 1pt } !{\vrule width 1pt } !{\vrule width 1pt}}
-\hline
-(a,v) & [(a,v)] & \{3\} & \{3\}\\
-\hline
-(Size, big) & \{1,2,7,8\}        & -          & -          \\ 
-(Size, medium) & \{3,4,5,6\}     & \{3\}      & \{3\}      \\  
-(Color, yellow) & \{1,2,3\}      & \hl{\{3\}} & -          \\  
-(Color, blue) & \{4,5,6,7,8\}    & -          & -          \\ 
-(Feel, soft) & \{1,3,6\}         & \{3\}      & \hl{\{3\}} \\ 
-(Feel, hard) & \{2,4,5,7,8\}     & -          & -          \\ 
-(Temperature, low) &\{1,6,7,8\}  & -          & -          \\
-(Temperature, high) & \{2,3,4,5\}& \{3\}      & \{3\}      \\
-\hline 
-&& \{1,2,3\} $\nsubseteq$ \{1,3,7,8\} & \{1,2,3\} $\cap$ \{1,3,6\} = \{1,3\} $\subseteq$ \{1,3,7,8\}
-\end{tabular}
-
-Possible Rules:\\
-(Size, big) \& (Temperature, low) $\rightarrow$ (Attitude, positive) \\
-(Color, yellow) \& (Feel, soft) $\rightarrow$ (Attitude, positive) \\
-\hfill\\
-\begin{tabular}{ | c | c !{\vrule width 1pt } !{\vrule width 1pt} c | c | c | c}
-\hline
-(a,v) & [(a,v)] & \{2,4,5,6\} & \{2,4,5,6\} & \{2,4,5,6\} \\
-\hline
-(Size, big) & \{1,2,7,8\}        & \{2\}          & \{2\}         & \{2\}\\ 
-(Size, medium) & \{3,4,5,6\}     & \hl{\{4,5,6\}} & -             & -\\  
-(Color, yellow) & \{1,2,3\}      & \{2\}          & \{2\}         & \{2\}\\  
-(Color, blue) & \{4,5,6,7,8\}    & \{2,5,6\}      & \{2,5,6\}     & \hl{\{2,5,6\}}\\ 
-(Feel, soft) & \{1,3,6\}         & \{6\}          & \{6\}         & \{6\}\\ 
-(Feel, hard) & \{2,4,5,7,8\}     & \{2,4,5\}      & \{2,4,5\}     & \{2,4,5\}\\ 
-(Temperature, low) &\{1,6,7,8\}  & \{6\}          & \{6\}         & \{6\}\\
-(Temperature, high) & \{2,3,4,5\}& \{2,4,5\}      & \hl{\{2,4,5\}}& -\\
-\hline 
-&& \{3,4,5,6\} $\nsubseteq$ \{2,4,5,6\} & \{3,4,5,6\} $\cap$ \{2,3,4,5\} = \{3,4,5\} $\nsubseteq$ \{2,4,5,6\} & \{3,4,5,6\} $\cap$ \{2,3,4,5\} $\cap$ \{4,5,6,7,8\}= \{4,5\} $\subseteq$ \{2,4,5,6\}
-\end{tabular}
-
-We know the rules associated with \{2,6\} from figuring out the certain rules above
-
-Possible Rules:\\
-\sout{(Size, medium)} \& (Temperature, high) \& (Color, blue) $\rightarrow$ (Attitude, negative) \\
-\sout{(Color, yellow)} \& (Size, big) \& (Temperature, high) $\rightarrow$ (Attitude, negative)\\
-(Feel, soft) \& \sout{(Size, medium)} \& (Color, blue) $\rightarrow$ (Attitude, negative)\\
-\hfill\\
-
-\begin{tabular}{ | c | c !{\vrule width 1pt } !{\vrule width 1pt} c | c !{\vrule width 1pt } !{\vrule width 1pt } !{\vrule width 1pt } }
-\hline
-(a,v) & [(a,v)] & \{4,5,7,8\} & \{4,5,7,8\} \\
-\hline
-(Size, big) & \{1,2,7,8\}        & \{7,8\}         & \{7,8\} \\ 
-(Size, medium) & \{3,4,5,6\}     & \{4,5\}         & \{4,5\} \\  
-(Color, yellow) & \{1,2,3\}      & -               & -       \\  
-(Color, blue) & \{4,5,6,7,8\}    & \hl{\{4,5,7,8\}}& -       \\ 
-(Feel, soft) & \{1,3,6\}         & -               & -\\ 
-(Feel, hard) & \{2,4,5,7,8\}     & \{4,5,7,8\}     & \hl{\{4,5,7,8\}}\\ 
-(Temperature, low) &\{1,6,7,8\}  & \{7,8\}         & \{7,8\}\\
-(Temperature, high) & \{2,3,4,5\}& \{4,5\}         & \{4,5\}\\
-\hline 
-&& \{4,5,6,7,8\} $\nsubseteq$ \{4,5,7,8\} & \{4,5,6,7,8\} $\cap$ \{2,4,5,7,8\} = \{4,5,7,8\} $\subseteq$ \{4,5,7,8\}
-\end{tabular}
-
-Possible Rules:\\
-(Color, blue) \& (Feel, hard) $\rightarrow$ (Attitude, so-so)\\
-
-\end{center}
-
-Certain Rules:\\
-(Color, yellow) \& (Feel, soft) $\rightarrow$ (Attitude, positive)\\
-(Size, big) \& (Temperature, high) $\rightarrow$ (Attitude, negative)\\
-(Feel, soft) \& (Color, blue) $\rightarrow$ (Attitude, negative)\\
-
-Possible Rules:\\
-(Size, big) \& (Temperature, low) $\rightarrow$ (Attitude, positive) \\
-(Color, yellow) \& (Feel, soft) $\rightarrow$ (Attitude, positive) \\
-(Temperature, high) \& (Color, blue) $\rightarrow$ (Attitude, negative) \\
-(Size, big) \& (Temperature, high) $\rightarrow$ (Attitude, negative)\\
-(Feel, soft) \& (Color, blue) $\rightarrow$ (Attitude, negative)\\
-(Color, blue) \& (Feel, hard) $\rightarrow$ (Attitude, so-so)\\
-
-\begin{center}
-\textbf{In general, for subsets X and Y of the universe U}
-$$\bar{A}X-\bar{A}Y \subseteq \bar{A}(X-Y)$$
-\textbf{where A is the set of all attributes.}\\
-Show a decision table, and subsets X and Y of U with\\
-$$\bar{A}X-\bar{A}Y \subset \bar{A}(X-Y)$$
-
-\begin{tabular}{c|c|c|}
-  & Price & Sale \\
-\hline
-1 & High & Yes\\
-2 & High & No\\
-3 & Low & Yes\\
-4 & Low & Yes\\
-\hline
-\end{tabular}
-
-$$A^* = \{\{1,2\},\{3,4\}\}$$
-$$X=(Sale, yes)=\{1,3,4\}$$
-$$Y=(Sale, no)=\{2\}$$
-
-$$\bar{A}X-\bar{A}Y = \{1,2,3,4\} - \{1,2\} = \{3,4\}$$
-$$\bar{A}(X-Y) = \bar{A}( \{1,3,4\} - \{2\} ) = \bar{A}(\{1,3,4\}) = \{1,2,3,4\}$$
-$$\{3,4\} \subset \{1,2,3,4\}$$
-\end{center}
+\section{Discretize the following decision table using.}
+\subsection{a) Dominant Attribute approach based on conditional entropy}
+\subsection{b) Multiple Scanning approach based on conditional entropy (a single scan)}
+\subsection{c) Globalized Equal Frequency per Interval method}
 
 
 
