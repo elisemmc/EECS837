@@ -113,7 +113,9 @@ class lem1:
 		array = line.split()
 
 		#check for special lines
-		if array[0] == '<' and array[-1] == '>':
+		if len(array) == 0:
+			return None
+		elif array[0] == '<' and array[-1] == '>':
 			return None
 		elif array[0] == '[' and array[-1] == ']':
 			return array[1:-1]
@@ -160,7 +162,7 @@ class lem1:
 	def concatLine(self, line):
 		output = ''
 		for i in line:
-			output = output + i + ' '
+			output = str(output) + str(i) + ' '
 		return output
 
 	def getStar(self, array):
