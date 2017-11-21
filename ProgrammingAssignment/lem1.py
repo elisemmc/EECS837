@@ -1,3 +1,6 @@
+# Author: Elise McEllhiney
+# KUID: 2298962
+
 import os.path
 import numpy
 import copy
@@ -233,29 +236,34 @@ class lem1:
 	def run(self):
 		file = self.getDataFile()
 
+		# Read in file format
 		(attributeNames, cases) = self.parseFile(file)
-		attributes = cases[:,0:-1]
-		decisions = cases[:,-1]
+		attributes = cases[:,0:-1] # Attributes of cases
+		decisions = cases[:,-1] # Decisions of cases
 		# print '\nInput attribute names:\n' + str(attributeNames)
 		# print '\nInput cases:\n' + str(cases)
 		# print '\nInput attributes:\n' + str(attributes)
 		# print '\nInput decisions:\n' + str(decisions)
 
+		# Discretize any numeric attributes
 		discretizedAttributes = self.discretize(attributes)
 		# print '\nDiscretized data:\n' + str(discretizedAttributes)
 
-		#get A star by filtering the decisions by concept
+		# get A* by filtering the decisions by concept
 		aStar = self.getStar(decisions)
 		# print '\nA*:\n' + str(aStar)
 
+		# get {d}* of attributes
 		dStar = self.getStar(attributes)
 		# print '\n{d}*:\n' + str(dStar)
 
+		# generate conceptual variables
 		conceptualVariables = self.getConceptualVariables(decisions)
 		# print '\nConceptual variables:\n' + str([(c.name, c.array) for c in conceptualVariables])
 
 		# print '\n{d}* <= A*:\n' + str(self.leqArray(dStar, aStar)) + '\n'
 
+		# if {d}* <= A*, then data is consistent
 		if self.leqArray(dStar, aStar):
 			singleGlobalCoverings = [ 
 				globalCovering(
@@ -271,7 +279,7 @@ class lem1:
 
 			self.writeToFile('.certain.r', strRules)
 			self.writeToFile('.possible.r', strRules, True)
-
+		# otherwise, data isn't consistent and we need to generate upper and lower approximations
 		else:
 			conceptTrue = [ [i for i, x in enumerate(c.array) if x] for c in conceptualVariables ]
 			lowerApproximations = [ self.lowerApproximation(c, dStar) for c in conceptTrue ]
